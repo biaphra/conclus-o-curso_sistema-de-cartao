@@ -1,3 +1,6 @@
+<p align="center">
+  <img src="docs/01home.png" alt="DIO Bank" width="100%">
+</p>
 # DIO Bank
 
 Aplicação Django para solicitar cartões e acompanhar o andamento com segurança.
