@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+  <section class="hero hero-auth overflow-hidden">
+    <div class="hero-copy-block"><span class="eyebrow">Olá, {{ user.first_name|default:user.username }}</span><h1>Seu próximo cartão começa aqui.</h1><p>Solicite em poucos passos e acompanhe cada etapa com total clareza.</p><div class="d-flex flex-wrap gap-2"><a href="{% url 'cards:request_card' %}" class="btn btn-brand btn-lg">Solicitar cartão <span aria-hidden="true">→</span></a><a href="{% url 'cards:view_requests' %}" class="btn btn-soft btn-lg">Acompanhar pedidos</a></div></div>
+    <div class="mini-card" aria-hidden="true"><span class="mini-card-chip"></span><span class="mini-card-brand">DIO</span><span class="mini-card-number">•••• 8421</span><span>{{ user.first_name|default:user.username|upper }}</span></div>
+  </section>
+  {% else %}
+  <section class="hero hero-public overflow-hidden">
+    {% load static %}<img src="{% static 'images/dio-bank-hero.webp' %}" alt="Cartão preto flutuando entre formas de vidro violetas" class="hero-image" width="1536" height="1024" fetchpriority="high">
+    <div class="hero-overlay"></div>
+    <div class="hero-copy-block"><span class="eyebrow eyebrow-light">O banco que acompanha você</span><h1>Leve. Seguro.<br><span>Do seu jeito.</span></h1><p>Uma experiência financeira sem ruído, com controle e transparência em cada etapa.</p><div class="d-flex flex-wrap gap-2"><a href="{% url 'signup' %}" class="btn btn-coral btn-lg">Quero meu cartão <span aria-hidden="true">→</span></a><a href="{% url 'login' %}" class="btn btn-glass btn-lg">Já sou cliente</a></div><div class="trust-row"><span>✓ Sem burocracia</span><span>✓ Acompanhamento em tempo real</span></div></div>
+  </section>
+  <section class="feature-grid" aria-label="Benefícios"><article><span class="feature-icon">01</span><h2>Pedido simples</h2><p>Um fluxo direto, claro e pensado para você.</p></article><article><span class="feature-icon">02</span><h2>Dados protegidos</h2><p>Tokenização e privacidade desde o primeiro acesso.</p></article><article><span class="feature-icon">03</span><h2>Status transparente</h2><p>Acompanhe cada atualização em uma linha do tempo.</p></article></section>
+  {% endif %}
+{% endblock %}

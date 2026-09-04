@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Minhas solicitações | DIO Bank{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
+  <div><span class="eyebrow">Área do cliente</span><h1 class="h2 mt-2 mb-0">Minhas solicitações</h1></div>
+  <a href="{% url 'cards:request_card' %}" class="btn btn-brand">+ Solicitar cartão</a>
+</div>
+<form method="get" class="card content-card mb-4"><div class="card-body d-flex flex-wrap gap-2 align-items-end"><div class="flex-grow-1"><label for="status" class="form-label">Filtrar por status</label><select id="status" name="status" class="form-select"><option value="">Todos</option>{% for value, label in statuses %}<option value="{{ value }}" {% if status_filter == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></div><button class="btn btn-outline-dark" type="submit">Filtrar</button></div></form>
+{% if user_requests %}
+  <div class="d-grid gap-3">
+    {% for request in user_requests %}
+    <a href="{% url 'cards:card_details' request.id %}" class="card content-card request-row text-decoration-none text-reset">
+      <div class="card-body d-flex justify-content-between align-items-center gap-3">
+        <div><strong>{{ request.name }}</strong><div class="text-secondary small mt-1">Solicitado em {{ request.created_at|date:"d/m/Y \à\s H:i" }} · final {{ request.last_four }}</div></div>
+        <span class="badge rounded-pill status-{{ request.status }}">{{ request.get_status_display }}</span>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+  {% if user_requests.paginator.num_pages > 1 %}<nav class="mt-4" aria-label="Paginação"><ul class="pagination justify-content-center">{% if user_requests.has_previous %}<li class="page-item"><a class="page-link" href="?status={{ status_filter }}&page={{ user_requests.previous_page_number }}">Anterior</a></li>{% endif %}<li class="page-item active"><span class="page-link">{{ user_requests.number }} de {{ user_requests.paginator.num_pages }}</span></li>{% if user_requests.has_next %}<li class="page-item"><a class="page-link" href="?status={{ status_filter }}&page={{ user_requests.next_page_number }}">Próxima</a></li>{% endif %}</ul></nav>{% endif %}
+{% else %}
+  <div class="card content-card text-center"><div class="card-body p-5"><div class="display-5 mb-3" aria-hidden="true">◇</div><h2 class="h4">Nenhuma solicitação ainda</h2><p class="text-secondary">Quando você solicitar um cartão, o andamento aparecerá aqui.</p><a href="{% url 'cards:request_card' %}" class="btn btn-brand">Solicitar meu cartão</a></div></div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalhes do cartão | DIO Bank{% endblock %}
+
+{% block content %}
+<a class="text-decoration-none" href="{% url 'cards:view_requests' %}">← Voltar para solicitações</a>
+<div class="row align-items-center g-4 mt-2">
+  <div class="col-lg-6"><div class="card credit-card"><div class="card-body p-4 d-flex flex-column justify-content-between"><div class="d-flex justify-content-between"><strong>{{ card.name }}</strong><span>{{ card.get_network_display }}</span></div><div><div class="card-number">{{ card.masked_number }}</div><div class="d-flex justify-content-between mt-4 small"><span>{{ card.holder_name }}</span><span>{{ card.expiration_date }}</span></div></div></div></div></div>
+  <div class="col-lg-6"><div class="card content-card"><div class="card-body p-4"><span class="eyebrow">Acompanhamento</span><h1 class="h3 mt-2">Detalhes da solicitação</h1><hr><div class="d-flex justify-content-between"><span class="text-secondary">Status atual</span><span class="badge rounded-pill status-{{ card.status }}">{{ card.get_status_display }}</span></div><div class="d-flex justify-content-between mt-3"><span class="text-secondary">Solicitado em</span><strong>{{ card.created_at|date:"d/m/Y" }}</strong></div><h2 class="h6 mt-4">Histórico</h2><ol class="timeline">{% for item in card.history.all %}<li><strong>{{ item.get_status_display }}</strong><small>{{ item.created_at|date:"d/m/Y H:i" }}</small></li>{% endfor %}</ol><p class="small text-secondary mt-4 mb-0">Por segurança, somente um token e os quatro últimos dígitos ficam armazenados.</p></div></div></div>
+</div>
+{% endblock %}

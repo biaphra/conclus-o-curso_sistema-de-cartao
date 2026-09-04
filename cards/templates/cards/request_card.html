@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Solicitar novo cartão{% endblock %}
+
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-7 col-xl-6">
+    <a class="text-decoration-none" href="{% url 'cards:view_requests' %}">← Voltar para solicitações</a>
+    <div class="card content-card mt-3"><div class="card-body p-4 p-md-5">
+      <span class="eyebrow">Nova solicitação</span>
+      <h1 class="h2 mt-2">Como seu nome deve aparecer?</h1>
+      <p class="text-secondary mb-4">Após o envio, você poderá acompanhar o andamento na área de solicitações.</p>
+  <form method="post" novalidate>
+    {% csrf_token %}
+
+    {% if form.non_field_errors %}
+      <div class="alert alert-danger" role="alert">
+        {% for error in form.non_field_errors %}
+          {{ error }}
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% for field in form %}
+      <div class="mb-3">
+        <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+        {% if field.errors %}
+          {% render_field field class="form-control is-invalid" %}
+          <div class="invalid-feedback">
+            {{ field.errors|first }}
+          </div>
+        {% else %}
+          {% render_field field class="form-control" %}
+          {% if field.help_text %}
+            <small class="form-text text-muted">{{ field.help_text }}</small>
+          {% endif %}
+        {% endif %}
+      </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-brand w-100 py-3">Enviar solicitação</button>
+  </form>
+    </div></div>
+  </div>
+</div>
+{% endblock %}
+
